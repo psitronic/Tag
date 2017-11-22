@@ -1,0 +1,15 @@
+{
+    "manifest_version": 2,
+
+    "name": "Stickers",
+    "description": "Allow you to leave stickers for your friend on webpages.",
+    "version": "1.0",
+
+
+    "content_scripts": [
+        {
+            "matches": ["*://*/*"],
+            "js": ["./vendor/jquery.min.js", "./script.js"]
+        }
+    ]
+}

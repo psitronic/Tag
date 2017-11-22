@@ -1,0 +1,26 @@
+{
+  "name": "tags",
+  "version": "1.0.0",
+  "description": "Allow you to leave stickers for your friend on the websites you visit",
+  "main": "./build/script.js",
+  "scripts": {
+    "dev": "nodemon --watch ./src -e html,css,js --ignore script_with_export -x \"npm run devBuild\"",
+    "build": "webpack -p",
+    "devBuild": "node ./src/js/createScriptWithExport.js && webpack -d",
+    "web-ext": "web-ext run --source-dir ./build",
+    "live-preview": "serve"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-css-import-to-string": "0.0.2",
+    "babel-plugin-transform-html-import-to-string": "0.0.1",
+    "babel-preset-env": "^1.6.1",
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.12.1",
+    "open": "0.0.5",
+    "webpack": "^3.8.1"
+  }
+}
