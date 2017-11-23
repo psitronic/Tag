@@ -19,6 +19,8 @@ app.get("/test", function(request, response) {
   
 });
 
+
+// this is to test login requests Extension script will make
 app.get("/login", function(request, response) {
         console.log("request.query", request.query)
   
