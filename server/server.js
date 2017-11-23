@@ -19,6 +19,13 @@ app.get("/test", function(request, response) {
   
 });
 
+app.get("/login", function(request, response) {
+        console.log("request.query", request.query)
+  
+        response.send('logged in')
+        response.end()
+});
+
 
 
 var listener = app.listen(process.env.PORT, function () {
@@ -53,8 +60,9 @@ function trydb(){
           
       db.collection('url').find({}).limit(100).execute()
           
-      //  use this to delete stuff from collection          
-      //db.collection('url').deleteMany()     
+      //  use this to delete all docs from specified collection          
+      //  db.collection('url').deleteMany()     
+          
     ).then(docs => {  
       console.log("Found this", docs)
       
