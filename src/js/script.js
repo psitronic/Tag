@@ -76,18 +76,18 @@ class API {
 }
 
 // Create API
-const tagAPI = new API('https://example.org/api/');
+const tagAPI = new API('http://www.mocky.io/v2/5a16ec423100002a1e8d34a2/');
 
 // Add function
 tagAPI.addTag = function(tag) {
     const args = {
-        action: 'createTag',
-        tag: tag
     };
-    return this.apiCall(args, 'tag/', 'POST');
+    return this.apiCall(args);
 };
 
 // Call function
 tagAPI.addTag('hello world')
-    .then(console.log)
+    .then(function(response) {
+        console.log(response);
+    })
     .catch(console.error);
