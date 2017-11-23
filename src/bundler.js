@@ -8,7 +8,7 @@ const addCSS = function(style) {
     document.body.appendChild(stylesheet);
 };
 const addHTML = function(html) {
-    document.body.innerHTML += html;
+    $('body').append(html);
 };
 
 addHTML(mainHTML);
