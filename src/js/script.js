@@ -91,3 +91,29 @@ tagAPI.addTag('hello world')
         console.log(response);
     })
     .catch(console.error);
+
+
+ 
+const client = new stitch.StitchClient('tag-mjydj'); 
+const db = client.service('mongodb', 'mongodb-atlas').db('test');
+
+    
+    
+client.login()
+    .then(() => {
+        db.collection('garbageCollection').insertOne({
+            "message": "test_n"
+        });        
+    })
+    .then(() => {
+        console.log(db.collection('garbageCollection').find({}));
+
+        db.collection('garbageCollection').find({}).limit(100).execute(); // db.collection(...).find(...).limit is not a function
+    })    
+    .then(docs => {  
+        console.log("Found docs", docs);
+        console.log("[MongoDB Stitch] Connected to Stitch");
+    })
+    .catch(err => {
+        console.error(err);
+    });
