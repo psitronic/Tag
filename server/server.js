@@ -1,7 +1,10 @@
 // init project
-const stitch = require("mongodb-stitch")
-var express = require('express');
-var app = express();
+const stitch = require("mongodb-stitch"),
+      mongo = require('mongodb').MongoClient,
+      express = require('express');
+
+
+const app = express();
 
 
 // use whatever libs or frameworks you'd like through `package.json`.
@@ -73,5 +76,28 @@ function trydb(){
     }).catch(err => {
       console.error(err)
     });
+  
+}
+
+
+function tryMlab(){
+  
+     mongo.connect(process.env.DBURL, function(er, db){
+           if (er) {throw er
+           } else {
+             
+             //console.log("db", db)
+             
+             db.collection('users').find({}).toArray(function(er, docs){
+                   if (er) {throw er
+                   } else { 
+                         
+                         console.log('docs', docs)
+                   }
+                 
+             })
+           }
+       
+     })   
   
 }
