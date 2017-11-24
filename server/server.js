@@ -92,7 +92,9 @@ function tryMlab(){
                    if (er) {throw er
                    } else { 
                          
-                         console.log('docs', docs)
+                         console.log('docs', docs);
+                         
+                         db.close();
                    }
                  
              })
