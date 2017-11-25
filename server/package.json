@@ -12,7 +12,8 @@
   "dependencies": {
     "express": "^4.16.2",
     "mongodb": "^2.2.33",
-    "mongodb-stitch": "^2.2.0"
+    "mongodb-stitch": "^2.2.0",
+    "mongoose": "^4.13.5"
   },
   "engines": {
     "node": "8.x"
