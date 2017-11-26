@@ -1,48 +1,43 @@
 // init project
-const stitch = require("mongodb-stitch"),
-      mongo = require('mongodb').MongoClient,
-      express = require('express'),
-      mongoose = require("mongoose"),
-      Schema = mongoose.Schema;;
+//const stitch = require("mongodb-stitch"),
+//      mongo = require('mongodb').MongoClient;
 
-
-const app = express();
-
-
-// use whatever libs or frameworks you'd like through `package.json`.
-
-
-// http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'));
-
-// http://expressjs.com/en/starter/basic-routing.html
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + '/views/index.html');
-});
-
-app.get("/test", function(request, response) {
+var bodyParser = require('body-parser');
+var path = require('path');
+var express = require('express'),
+    app = express(),
+    session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+var mongoose = require("mongoose");
+var User = require('./user/user');
+var routes = require('./router/router');
+      
+// connect to mongoDB
+var mongoDB = 'mongodb://user1:test@ds163667.mlab.com:63667/tag';   
+mongoose.connect(mongoDB, {useMongoClient: true});
+var db = mongoose.connection;
+      
+// create a session with a session ID
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStore({
+  mongooseConnection: db
+  })
+}));
+      
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+      
+app.use('/', routes);      
   
-});
-
-
-// this is to test login requests Extension script will make
-app.get("/login", function(request, response) {
-        console.log("request.query", request.query)
-  
-        response.send('logged in')
-        response.end()
-});
-
-
-
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
 
-
-
-
-trydb();
+//trydb();
 
 function trydb(){
     //   stickertag@admin
@@ -106,24 +101,12 @@ function tryMlab(){
   
 }
 
-//mongooseMlab();
+mongooseMlab();
 
 function mongooseMlab() {
   
-  var userSchema = new Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    user: { type: String, required: true },
-    friends: { type: String}
-  });
-
-  var User = mongoose.model('User', userSchema);
-  module.exports = User;
-
-  mongoose.connect(process.env.DBURL, {useMongoClient: true})
-
-  User.find({},function(error, docs) {
-    if (error) throw error;
+User.find({},function(error, docs) {
+  if (error) throw error;
     console.log(docs);
   });
 }

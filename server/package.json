@@ -13,7 +13,10 @@
     "express": "^4.16.2",
     "mongodb": "^2.2.33",
     "mongodb-stitch": "^2.2.0",
-    "mongoose": "^4.13.5"
+    "mongoose": "^4.13.5",
+    "express-session": "^1.15.6",
+    "connect-mongo": "^2.0.0",
+    "bcrypt": "^1.0.3"
   },
   "engines": {
     "node": "8.x"
