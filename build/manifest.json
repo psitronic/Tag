@@ -31,7 +31,7 @@
          "browserAction"
     ],
     "background":{
-         "scripts": ["event_script.js"],
+         "scripts": ["./popup/event_script.js"],
          "persistent": false
     }
 }
