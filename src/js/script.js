@@ -76,44 +76,20 @@ class API {
 }
 
 // Create API
-const tagAPI = new API('http://www.mocky.io/v2/5a16ec423100002a1e8d34a2/');
+const tagAPI = new API('https://stickertags2.glitch.me/');
 
 // Add function
-tagAPI.addTag = function(tag) {
+tagAPI.login = function(email, password) {
     const args = {
+        email, 
+        password,
     };
-    return this.apiCall(args);
+    return this.apiCall(args, 'loginjson', 'POST');
 };
 
 // Call function
-tagAPI.addTag('hello world')
-    .then(function(response) {
-        console.log(response);
-    })
-    .catch(console.error);
+tagAPI.login('lindrope@hotmail.com', 'test')
+    .then(response => console.log('Login', response))
+    .catch(error => console.error('Login error', error));
 
-
- 
-const client = new stitch.StitchClient('tag-mjydj'); 
-const db = client.service('mongodb', 'mongodb-atlas').db('test');
-
-    
-    
-client.login()
-    .then(() => {
-        db.collection('garbageCollection').insertOne({
-            "message": "test_n"
-        });        
-    })
-    .then(() => {
-        console.log(db.collection('garbageCollection').find({}));
-
-        db.collection('garbageCollection').find({}).limit(100).execute(); // db.collection(...).find(...).limit is not a function
-    })    
-    .then(docs => {  
-        console.log("Found docs", docs);
-        console.log("[MongoDB Stitch] Connected to Stitch");
-    })
-    .catch(err => {
-        console.error(err);
-    });
+log = (...args) => console.log(...args);

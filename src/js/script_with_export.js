@@ -77,19 +77,21 @@ class API {
 }
 
 // Create API
-const tagAPI = new API('https://example.org/api/');
+const tagAPI = new API('https://stickertags2.glitch.me/');
 
 // Add function
-tagAPI.addTag = function(tag) {
+tagAPI.login = function(email, password) {
     const args = {
-        action: 'createTag',
-        tag: tag
+        email, 
+        password,
     };
-    return this.apiCall(args, 'tag/', 'POST');
+    return this.apiCall(args, 'loginjson', 'POST');
 };
 
 // Call function
-tagAPI.addTag('hello world')
-    .then(console.log)
-    .catch(console.error);
+tagAPI.login('lindrope@hotmail.com', 'test')
+    .then(response => console.log('Login', response))
+    .catch(error => console.error('Login error', error));
+
+log = (...args) => console.log(...args);
 };
