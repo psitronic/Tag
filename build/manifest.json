@@ -27,11 +27,11 @@
          "activeTab",
          "storage",
          "https://www.mocky.io/*",
-         "https://stickertags2.glitch.me/*",
-         "browserAction"
+         "https://stickertags2.glitch.me/*"
+         //,"browserAction"
     ],
     "background":{
-         "scripts": ["./popup/event_script.js"],
+         "scripts": ["./popup/event-script.js"],
          "persistent": false
     }
 }
