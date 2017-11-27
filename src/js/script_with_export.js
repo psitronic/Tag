@@ -93,5 +93,4 @@ tagAPI.login('lindrope@hotmail.com', 'test')
     .then(response => console.log('Login', response))
     .catch(error => console.error('Login error', error));
 
-log = (...args) => console.log(...args);
 };

@@ -1,27 +1,3 @@
-$(document).ready(function() {
-    $('#triggerIcon').on('click', function(event) {
-        console.log('Clicked icon');
-        console.log(event);
-        console.log('test');
-    });
-});
-
-/**
- * @description a template for creating an API caller
- * @example
- * const myAPI = new API('http://example.org/api/');
- * myAPI.myOwnAPICall = function() {
- *   var args = {
- *      action: 'test',
- *      something: 'something'
- *   };
- *   return this.apiCall(args, 'GET');
- * };
- * 
- * myApi.myOwnAPICall()
- *  .then(response => console.log(response))
- *  .catch(error => console.error(error));
- */
 class API {
     constructor(baseUrl) {
         this.baseUrl =  baseUrl;
@@ -87,7 +63,20 @@ tagAPI.login = function(email, password) {
     return this.apiCall(args, 'loginjson', 'POST');
 };
 
-// Call function
-tagAPI.login('lindrope@hotmail.com', 'test')
-    .then(response => console.log('Login', response))
-    .catch(error => console.error('Login error', error));
+
+$(document).ready(function() {
+    $('form').submit(function(e) {
+        e.preventDefault();
+        var email = $('input[name="email"]').val();
+        var password = $('input[name="password"]').val();
+        const args = {
+            email: email,
+            password: password
+        };
+        $('#status').text('Logging in');
+        // Call function
+        tagAPI.login(email, password)
+            .then(response => $('#status').text(`Logged in as ${response.name}`))
+            .catch(error => alert('Login error\n' + JSON.stringify(error, null, 2)));
+    });
+});

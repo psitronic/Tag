@@ -5,8 +5,8 @@
   "main": "./build/script.js",
   "scripts": {
     "dev": "nodemon --watch ./src -e html,css,js --ignore script_with_export -x \"npm run devBuild\"",
-    "build": "webpack -p",
-    "devBuild": "node ./src/js/createScriptWithExport.js && webpack -d",
+    "build": "node ./createScriptWithExport.js && webpack -p",
+    "devBuild": "node ./createScriptWithExport.js && webpack -d",
     "web-ext": "web-ext run --source-dir ./build",
     "live-preview": "serve"
   },
