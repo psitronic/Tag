@@ -5,7 +5,6 @@
     "description": "Allow you to leave stickers for your friend on webpages.",
     "version": "1.0",
 
-
     "content_scripts": [
         {
             "matches": ["*://*/*"],
@@ -19,6 +18,20 @@
 
     "browser_action": {
         "default_title": "Tag",
-        "default_popup": "./popup/popup.html"
+        "default_popup": "./popup/popup.html",
+        "default_icon":  "./popup/icon_32_active.png"
+    },
+    "permissions": [
+         "background",
+         "tabs",
+         "activeTab",
+         "storage",
+         "https://www.mocky.io/*",
+         "https://stickertags2.glitch.me/*",
+         "browserAction"
+    ],
+    "background":{
+         "scripts": ["event_script.js"],
+         "persistent": false
     }
 }
