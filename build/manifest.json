@@ -27,7 +27,9 @@
          "activeTab",
          "storage",
          "https://www.mocky.io/*",
-         "https://stickertags2.glitch.me/*"
+         "https://stickertags2.glitch.me/*",
+         "*://*/",
+         "*://*/*"
          //,"browserAction"
     ],
     "background":{
