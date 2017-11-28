@@ -79,7 +79,7 @@ $(document).ready(function() {
             .then(response => $('#status').text(`Logged in as ${response.name}`))
             .catch(error => alert('Login error\n' + JSON.stringify(error, null, 2)));
     });
-
+    
     //  https://developer.chrome.com/extensions/xhr#requesting-permission
     $('#injectingActive').click(function(e){
                 /**
