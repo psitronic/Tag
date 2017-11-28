@@ -121,11 +121,17 @@ if (true) {
 }
 
 $(document).ready(function() {
-    $('#tag-triggerIcon').on('click', function(event) {
+    $('#tag-trigger-icon').on('click', function(event) {
         $('#tag-main').toggleClass('tag-small');
     });
     tagAPI.getMessages()
-        .then(showMessages)
+        .then(messages => {
+            if (messages.length) {
+                showMessages(messages);
+            } else {
+                showMessages([{author: 'Tag Team', text: '#First'}]);
+            }
+        })
         .catch(error => {
             console.error(error);
         });

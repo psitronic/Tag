@@ -1,6 +1,6 @@
 <div id="tag-main" class="tag-fixed-right-panel tag-small">
     <!-- Icon -->
-    <div id="tag-triggerIcon">
+    <div id="tag-trigger-icon">
         <svg viewbox="0 0 50 50">
             <defs>
                 <mask id="mask" x="0" y="0" width="50" height="50">
@@ -13,13 +13,14 @@
     </div>
     <!-- Content -->
     <div id="tag-content">
+        <a href="#">
+            <!-- TODO: Replace settings S with icon -->
+            <div id="tag-settings-icon" title="Open Settings Website">S</div>
+        </a>
         <form name="new-message">
             <textarea type="text" placeholder="New Tag"></textarea>
             <button type="submit">Post Tag</button>
         </form>
         <ul id="tag-messages"></ul>
-        <div id="tag-settings">
-            <p>Open <a href="">Website</a></p>
-        </div>
     </div>
 </div>

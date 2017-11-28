@@ -3,6 +3,9 @@
  * (e.g. if the website uses the style `a {text-decoration: none;}` it will applied to links used in here as well.
  * therefore restore default styles first
  */
+ #tag-main {
+     font-size: 16px;
+ }
 .tag-fixed-right-panel {
     position: fixed;
     top: 0;
@@ -36,7 +39,17 @@
     transition: opacity 500ms 0ms ease,
                 transform 0ms 500ms;
 }
-#tag-triggerIcon {
+#tag-settings-icon {
+    position: fixed;
+    top: 4em;
+    right: 0.5em;
+    width: 3em;
+    height: 3em;
+    text-align: center;
+    line-height: 3em;
+    background-color: white;
+}
+#tag-trigger-icon {
     position: fixed;
     top: 0.5em;
     right: 0.5em;
@@ -48,17 +61,21 @@
     cursor: pointer;
     overflow: hidden;
 }
-.tag-small #tag-triggerIcon {
+.tag-small #tag-trigger-icon {
     top: 2em;
     right: 2em;
-    opacity: 0.7;
+    opacity: 0.6;
 }
-.tag-small #tag-triggerIcon:hover {
+.tag-small #tag-trigger-icon:hover {
     opacity: 1;
 }
 
-form[name="new-message"] button[type="submit"] {
+#tag-main form[name="new-message"] button[type="submit"] {
     display: none;
+}
+
+#tag-main textarea {
+    width: calc(300px - 7.5em);
 }
 
 #tag-content {
@@ -67,6 +84,9 @@ form[name="new-message"] button[type="submit"] {
 #tag-messages {
     list-style: none;
     padding: 0;
+}
+#tag-messages:empty:before {
+    content: "Nothing to display yet";
 }
 .tag-message {
     padding: 0.4em 0;
@@ -79,5 +99,5 @@ form[name="new-message"] button[type="submit"] {
     white-space: pre-wrap;
 }
 .tag-message:not(:last-child) {
-	border-bottom: 1px solid grey;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
