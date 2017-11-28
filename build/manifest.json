@@ -14,7 +14,7 @@
                 "./contentScripts/script.js"
             ],
             "css": [
-                "./contentScripts/style.css"
+                "./contentScripts/css/style.css"
             ]
         }
     ],
