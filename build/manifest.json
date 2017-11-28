@@ -12,6 +12,9 @@
             "js": [
                 "./vendor/jquery.min.js",
                 "./contentScripts/script.js"
+            ],
+            "css": [
+                "./contentScripts/style.css"
             ]
         }
     ],
