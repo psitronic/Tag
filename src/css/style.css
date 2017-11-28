@@ -1,3 +1,8 @@
+/** TODO: Add default stylesheet for #tag-main *
+ * this is neccessary so the custom styles of the website doesn't apply for anything in #tag-main
+ * (e.g. if the website uses the style `a {text-decoration: none;}` it will applied to links used in here as well.
+ * therefore restore default styles first
+ */
 .tag-fixed-right-panel {
     position: fixed;
     top: 0;
@@ -7,7 +12,7 @@
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
-    background-color: rgba(0, 128, 109, 0.8);
+    background-color: rgba(0, 128, 109, 0.9);
     overflow: auto;
 
     color: black;
@@ -37,13 +42,11 @@
     right: 0.5em;
     width: 3em;
     height: 3em;
-    background-color: rgb(0, 100, 80);
-    background-image: url('../img/tag-icon-just-for-test.png');
-    border-radius: 100%;
     transition: top 500ms ease, 
                 right 500ms ease,
                 opacity 300ms ease;
     cursor: pointer;
+    overflow: hidden;
 }
 .tag-small #tag-triggerIcon {
     top: 2em;

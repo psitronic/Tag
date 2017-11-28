@@ -1,5 +1,17 @@
 <div id="tag-main" class="tag-fixed-right-panel tag-small">
-    <div id="tag-triggerIcon"></div>
+    <!-- Icon -->
+    <div id="tag-triggerIcon">
+        <svg viewbox="0 0 50 50">
+            <defs>
+                <mask id="mask" x="0" y="0" width="50" height="50">
+                    <rect x="0" y="0" width="50" height="50" fill="#fff" />
+                    <text text-anchor="middle" x="25" y="42" font-size="40" font-family="arial">T</text>
+                </mask>
+            </defs>
+            <rect x="0" y="0" width="50" height="50" mask="url(#mask)" fill="rgb(0, 180, 140)" fill-opacity="1"/>
+        </svg>
+    </div>
+    <!-- Content -->
     <div id="tag-content">
         <form name="new-message">
             <textarea type="text" placeholder="New Tag"></textarea>
