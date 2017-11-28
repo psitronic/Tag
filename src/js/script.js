@@ -77,17 +77,3 @@ class API {
 
 // Create API
 const tagAPI = new API('https://stickertags2.glitch.me/');
-
-// Add function
-tagAPI.login = function(email, password) {
-    const args = {
-        email, 
-        password,
-    };
-    return this.apiCall(args, 'loginjson', 'POST');
-};
-
-// Call function
-tagAPI.login('lindrope@hotmail.com', 'test')
-    .then(response => console.log('Login', response))
-    .catch(error => console.error('Login error', error));
