@@ -79,4 +79,39 @@ $(document).ready(function() {
             .then(response => $('#status').text(`Logged in as ${response.name}`))
             .catch(error => alert('Login error\n' + JSON.stringify(error, null, 2)));
     });
+
+    //  https://developer.chrome.com/extensions/xhr#requesting-permission
+    $('#injectingActive').click(function(e){
+                /**
+                 *  im using now just plain status of checkbox to see if to execute a script, 
+                 *  but later we can fetch 'active-injecting' status
+                 *  using either cookies or sessions collection from mongoDB
+                 */
+
+
+                if ($('#injectingActive').is(":checked")){
+                    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+
+                        // chrome.tabs.executeScript(null, {file: "contentScripts/script.js"})
+                        // chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
+
+                        setTimeout(()=>{
+                            //chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
+                            //alert("tab id" + tabs[0].id)
+                            chrome.tabs.executeScript( tabs[0].id,{
+                                // this works    
+                                'code': 'document.body.innerHTML = "<h1>a Tag!</h1>" + document.body.innerHTML',
+                                //'file': "test.js", //i cant make the same work as file, i dont know why
+                                'runAt': "document_end"
+                            });
+                        }, 1000)
+                    })
+
+                } else {
+                    chrome.tabs.query({active:true}, function(tabs){
+                        
+                        chrome.tabs.update(tabs[0].id, {url: tabs[0].url});
+                    })
+                }
+    })
 });

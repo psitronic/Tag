@@ -4,17 +4,17 @@
     "name": "Stickers",
     "description": "Allow you to leave stickers for your friend on webpages.",
     "version": "1.0",
-
-    "content_scripts": [
-        {
-            "matches": ["*://*/*"],
-            "js": [
-                "./vendor/jquery.min.js", 
-                "./vendor/stitch.min.js", 
-                "./contentScripts/script.js"
-            ]
-        }
-    ],
+    
+    //"content_scripts": [
+    //    {
+    //        "matches": ["*://*/*"],
+    //        "js": [
+    //            "./vendor/jquery.min.js", 
+    //            "./vendor/stitch.min.js", 
+    //            "./contentScripts/script.js"
+    //        ]
+    //    }
+    //],
 
     "browser_action": {
         "default_title": "Tag",
