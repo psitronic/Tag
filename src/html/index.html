@@ -1,10 +1,13 @@
-<div id="tag-main" class="tag-fixed-right-panel small">
-    <div id="tag-triggerIcon">
-        <!-- The icon should be placed here -->
-        <h1 style="margin: 0"><strong>T</strong></h1>
-    </div>
+<div id="tag-main" class="tag-fixed-right-panel tag-small">
+    <div id="tag-triggerIcon"></div>
     <div id="tag-content">
-        <h1>Tag!</h1>
-        <p>Hello World!</p>
+        <form name="new-message">
+            <textarea type="text" placeholder="New Tag"></textarea>
+            <button type="submit">Post Tag</button>
+        </form>
+        <ul id="tag-messages"></ul>
+        <div id="tag-settings">
+            <p>Open <a href="">Website</a></p>
+        </div>
     </div>
 </div>

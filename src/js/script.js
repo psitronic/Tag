@@ -1,9 +1,3 @@
-$(document).ready(function() {
-    $('#tag-triggerIcon').on('click', function(event) {
-        $('#tag-main').toggleClass('small');
-    });
-});
-
 /**
  * @description a template for creating an API caller
  * @example
@@ -75,8 +69,105 @@ class API {
 
 // Create API
 const tagAPI = new API('https://stickertags2.glitch.me/');
+tagAPI.getMessages = function() {
+    const args = { 
+        website: getWebsite()
+    };
+    return this.apiCall(args, 'getMessages');
+};
 
-var browser = browser || chrome;
-browser.runtime.onMessage.addListener(msg => {
-    console.log('Received message', msg);
+tagAPI.postMessage = function(message) {
+    const args = {
+        website: getWebsite(),
+        message: message
+    };
+    return this.apiCall(args, 'postMessage', 'POST');
+};
+
+const getWebsite = () => {
+    let website = window.location.host + window.location.pathname;
+    if (website.includes('index.')) {
+        website = website.substring(0, website.indexOf('index.'));
+    }
+    return website;
+};
+
+// Add sample response for getMessages (useful when you have no internet / the server is not responding)
+if (true) {
+    tagAPI.getMessages = () => Promise.resolve([
+        {
+            author: 'Lui',
+            text: 'Awesome Atmosphere'
+        },
+        {
+            author: 'Ian',
+            text: 'Hello World!'
+        },
+        {
+            author: 'Laslo',
+            text: 'Really beautiful website <3'
+        },
+        {
+            author: 'Iris',
+            text: '#FAQ is really interesting'
+        }
+    ]);
+}
+if (true) {
+    tagAPI.postMessage = (message) => Promise.resolve({
+        author: 'you',
+        text: message
+    });
+}
+
+$(document).ready(function() {
+    $('#tag-triggerIcon').on('click', function(event) {
+        $('#tag-main').toggleClass('tag-small');
+    });
+    tagAPI.getMessages()
+        .then(showMessages)
+        .catch(error => {
+            console.error(error);
+        });
+    
+    initNewMessageForm();
 });
+
+const showMessages = messages => messages.forEach(appendMessage);
+const prependMessage = message => $('#tag-messages').prepend(getMessageHtml(message));
+const appendMessage = message => $('#tag-messages').append(getMessageHtml(message));
+
+const getMessageHtml = message => `
+    <li class="tag-message">
+        <header>
+            <h4 class="tag-author">${message.author}</h4>
+        </header>
+        <p class="tag-text">${message.text}</p>
+    </li>
+`;
+
+const initNewMessageForm = () => {
+    // Show submit button on focus
+    $('form[name="new-message"] *').focus(function(e) {
+        $(this).parent().children('button[type="submit"]').fadeIn();
+    });
+
+    const handleSubmit = function(event) {
+        event.preventDefault();
+        const message = $('form[name="new-message"] textarea').val();
+        tagAPI.postMessage(message)
+            .then(response => {
+                $('form[name="new-message"] textarea').val('');
+                prependMessage(response);
+            })
+            .catch(() => alert('Error while creating message :/'));
+    };
+    // Submit triggerer
+    $('form[name="new-message"]').submit(handleSubmit);
+    $('form[name="new-message').keydown(function(e) {
+        // Ctrl + Enter
+        if (e.ctrlKey && e.which === 13) {
+            handleSubmit(e);
+        }
+    });
+};
