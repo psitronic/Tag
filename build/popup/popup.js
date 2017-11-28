@@ -63,20 +63,48 @@ tagAPI.login = function(email, password) {
     return this.apiCall(args, 'loginjson', 'POST');
 };
 
+// Add sample response for login (useful when you have no internet / the server is not responding)
+if (true) {
+    tagAPI.login = function(email, password) {
+        return Promise.resolve({name: 'otto'});
+    };
+}
+
 
 $(document).ready(function() {
     $('form').submit(function(e) {
         e.preventDefault();
         var email = $('input[name="email"]').val();
         var password = $('input[name="password"]').val();
-        const args = {
-            email: email,
-            password: password
-        };
+        
         $('#status').text('Logging in');
+
         // Call function
         tagAPI.login(email, password)
-            .then(response => $('#status').text(`Logged in as ${response.name}`))
-            .catch(error => alert('Login error\n' + JSON.stringify(error, null, 2)));
+            .then(onLogin)
+            .catch(onLoginError);
     });
 });
+
+var browser = browser || chrome;
+function onLogin(response) {
+    $('#status').text(`Logged in as ${response.name}`);
+
+    // Get all tabs
+    browser.tabs.query({}, tabs => {
+        var message = {
+            action: 'login',
+            success: 'true',
+            username: response.name
+        };
+        // Send message to all tabs
+        for (var i = 0; i < tabs.length; i++) {
+            browser.tabs.sendMessage(tabs[i].id, message);
+        }
+    });
+}
+
+function onLoginError(error) {
+    $('#status').text('Couldn\'t log in');
+    console.log(error);
+}

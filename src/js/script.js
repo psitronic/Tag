@@ -1,8 +1,6 @@
 $(document).ready(function() {
-    $('#triggerIcon').on('click', function(event) {
-        console.log('Clicked icon');
-        console.log(event);
-        console.log('test');
+    $('#tag-triggerIcon').on('click', function(event) {
+        $('#tag-main').toggleClass('small');
     });
 });
 
@@ -77,3 +75,8 @@ class API {
 
 // Create API
 const tagAPI = new API('https://stickertags2.glitch.me/');
+
+var browser = browser || chrome;
+browser.runtime.onMessage.addListener(msg => {
+    console.log('Received message', msg);
+});
