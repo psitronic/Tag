@@ -10,8 +10,7 @@
         {
             "matches": ["*://*/*"],
             "js": [
-                "./vendor/jquery.min.js", 
-                "./vendor/stitch.min.js", 
+                "./vendor/jquery.min.js",
                 "./contentScripts/script.js"
             ]
         }
