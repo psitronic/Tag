@@ -11,7 +11,8 @@
             "js": [
                 "./vendor/jquery.min.js", 
                 "./vendor/stitch.min.js", 
-                "./contentScripts/script.js"
+                "./contentScripts/script.js",
+                "./contentScripts/accountScript.js"
             ]
         }
     ],
@@ -30,10 +31,9 @@
          "https://stickertags2.glitch.me/*",
          "*://*/",
          "*://*/*"
-         //,"browserAction"
     ],
     "background":{
          "scripts": ["./popup/event-script.js"],
-         "persistent": false
+         "persistent": true
     }
 }
