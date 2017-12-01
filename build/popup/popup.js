@@ -55,12 +55,12 @@ class API {
 const tagAPI = new API('https://stickertags2.glitch.me/');
 
 // Add function
-tagAPI.login = function(email, password) {
+tagAPI.login = function(loginemail, loginpassword) {
     const args = {
-        email, 
-        password,
+        loginemail, 
+        loginpassword,
     };
-    return this.apiCall(args, 'loginjson', 'POST');
+    return this.apiCall(args, 'login', 'POST'); //this.apiCall(args, 'loginjson', 'POST');
 };
 
 // Add sample response for login (useful when you have no internet / the server is not responding)
@@ -70,9 +70,33 @@ if (true) {
     };
 }
 
+//document.cookie = ""
+var cookie = document.cookie
+//document.cookie = "ahoy"
+//"username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+//document.cookie = document.cookie.replace("ahoy; ","")
 
 $(document).ready(function() {
+    
+    $('#status').text("cookie: " +cookie )//JSON.parse(JSON.stringify(cookie)))
+    if (cookie){
+
+        if (cookie.includes("; ")) cookie = cookie.replace("; ", "")
+
+        //let parsed = JSON.parse(cookie)
+        cookie = JSON.parse(cookie)
+        //let cookie = document.cookie.replace("; ","")    // .JSON.stringify(cookie))
+        //alert( typeof cookie)
+
+        $('#status').text('logged in as >>' + cookie.name + "<<")
+
+    } else {
+        $('#status').text('no cookie stored')
+    }
+
+
     $('form').submit(function(e) {
+        //alert("submitted")
         e.preventDefault();
         var email = $('input[name="email"]').val();
         var password = $('input[name="password"]').val();
@@ -81,6 +105,7 @@ $(document).ready(function() {
 
         // Call function
         tagAPI.login(email, password)
+<<<<<<< HEAD
             .then(onLogin)
             .catch(onLoginError);
     });
@@ -101,6 +126,42 @@ function onLogin(response) {
         for (var i = 0; i < tabs.length; i++) {
             browser.tabs.sendMessage(tabs[i].id, message);
         }
+=======
+            .then(response => {
+
+                    
+
+                    $('#status').text(`Logged in as ${response.name}`);
+
+                    // store cookie on client must be done in event/background extension script otherwise it results in double un-parseable entry
+                    //if (!document.cookie) document.cookie = JSON.stringify(response)
+
+                    chrome.runtime.sendMessage(/*'hdgehpkhhjjifmjhkadeolficifligml',*/{newLoginData: JSON.stringify(response)}, function(response) {})
+
+                    $('#activePanel').css('display', 'flex')  
+                    $('#loginForm').css('display', 'none')
+
+                    $('#userAccountAnchor').click((ev)=>{
+
+                            
+                            //$.post("https://stickertags2.glitch.me/manageAccount", {id: response._id})//}, (er, data, d2)=>{})
+
+                            // open new tab with url "/manageAccount" and server redirects and sends handlebars file
+                            chrome.tabs.create({url:"https://stickertags2.glitch.me/manageAccount"}, (newTab)=>{
+
+                                chrome.tabs.query({url: "https://stickertags2.glitch.me/manageAccount", currentWindow: true}, function(tabs) {
+                                    chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello to content script"}, function(response) {
+                                      
+                                                  console.log(response.farewell);
+                                    });
+                                  });
+
+                            })
+
+                    })
+            })
+            .catch(error => alert('Login error\n' + JSON.stringify(error, null, 2)));
+>>>>>>> 12b59e622d503468b5bd76c343a84c6c0fde17a3
     });
 }
 

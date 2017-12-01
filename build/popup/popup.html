@@ -10,12 +10,20 @@
 <body>
   <div id="popup-content">
       <h1>Tag</h1>
-      <form>
-        <input name="email" type="text" placeholder="email">
-        <input name="password" type="password" placeholder="password">
+      <form id="loginForm">
+        <input name="email" type="text" placeholder="email" value="okram@protonmail.ch">
+        <input name="password" type="password" placeholder="password" value="test">
         <button type="submit">Login</button>
       </form>
       <p id="status"></p>
+
+      <div id="activePanel">
+          <label>tag display active</label>
+          <input type="checkbox" checked>
+
+
+          <p id="userAccountAnchor" >manage my account</p>
+      </div>
   </div>
   <script type="application/javascript" src="popup.js"></script>
 </body>
