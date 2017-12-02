@@ -4,7 +4,7 @@ $(function(){
 
   chrome.runtime.sendMessage({getLoginData: true}, function(response){
 
-          //console.log("msg sent, recieved this:\n", response)
+          console.log("msg sent, recieved this:\n", response)
           //let origin = "https://stickertags2.glitch.me"
 
           if (location.href === "https://stickertags2.glitch.me/manageAccount")

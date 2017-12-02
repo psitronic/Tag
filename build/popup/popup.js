@@ -64,32 +64,20 @@ tagAPI.login = function(loginemail, loginpassword) {
 };
 
 //document.cookie = ""
-var cookie = document.cookie
-//document.cookie = "ahoy"
-//"username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-//document.cookie = document.cookie.replace("ahoy; ","")
 
 $(document).ready(function() {
-    
-    $('#status').text("cookie: " +cookie )//JSON.parse(JSON.stringify(cookie)))
-    if (cookie){
 
-        if (cookie.includes("; ")) cookie = cookie.replace("; ", "")
-
-        //let parsed = JSON.parse(cookie)
-        cookie = JSON.parse(cookie)
-        //let cookie = document.cookie.replace("; ","")    // .JSON.stringify(cookie))
-        //alert( typeof cookie)
-
-        $('#status').text('logged in as >>' + cookie.name + "<<")
+    if ( isLoggedIn() === true ){
+                
+                $('#activePanel').css('display', 'flex')
+                $('#userAccountAnchor').click(openAccountPage)
 
     } else {
-        $('#status').text('no cookie stored')
+                $('#status').text('no cookie stored')
     }
 
 
     $('form').submit(function(e) {
-        //alert("submitted")
         e.preventDefault();
         var email = $('input[name="email"]').val();
         var password = $('input[name="password"]').val();
@@ -114,25 +102,69 @@ $(document).ready(function() {
                     $('#activePanel').css('display', 'flex')  
                     $('#loginForm').css('display', 'none')
 
-                    $('#userAccountAnchor').click((ev)=>{
+                    $('#userAccountAnchor').click(openAccountPage)
+            })
+            .catch(error => alert('Login error\n' + JSON.stringify(error, null, 2)));
+    });
+});
 
-                            
+
+function isLoggedIn(){
+
+    let cookie = document.cookie
+
+    if (cookie){
+        cookie = JSON.parse(JSON.parse(cookie))
+        //if (cookie.name)
+        $('#status').text("logged in as " + cookie.name || "cookie parsing error")
+        //$('#cookie').text("logged in as " + cookie.name || "cookie parsing error")
+        return true
+    
+    } else {
+        $('#status').text("no proper cookie stored")
+        return false
+    }
+
+    /*chrome.runtime.sendMessage(//'hdgehpkhhjjifmjhkadeolficifligml',
+                    {getLoginData: 1}, function(response) {
+                        $('#status').text("response" + JSON.stringify(response))
+    })*/
+}
+
+function openAccountPage(ev){
+            
+        //$.post("https://stickertags2.glitch.me/manageAccount", {id: response._id})//}, (er, data, d2)=>{})
+
+        // open new tab with url "/manageAccount" and server redirects and sends handlebars file
+        chrome.tabs.create({url:"https://stickertags2.glitch.me/manageAccount"}, (newTab)=>{
+
+                /*chrome.tabs.query({url: "https://stickertags2.glitch.me/manageAccount", currentWindow: true}, function(tabs) {
+
+                                /*chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello to content script"}, function(response) {
+                                      
+                                            console.log(response.farewell);
+                                });
+                });*/
+
+        })
+
+}
+
+// old opening of account page
+/*(ev)=>{
                             //$.post("https://stickertags2.glitch.me/manageAccount", {id: response._id})//}, (er, data, d2)=>{})
 
                             // open new tab with url "/manageAccount" and server redirects and sends handlebars file
                             chrome.tabs.create({url:"https://stickertags2.glitch.me/manageAccount"}, (newTab)=>{
 
-                                chrome.tabs.query({url: "https://stickertags2.glitch.me/manageAccount", currentWindow: true}, function(tabs) {
-                                    chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello to content script"}, function(response) {
-                                      
-                                                  console.log(response.farewell);
-                                    });
-                                  });
+                                // not needed
+                                // chrome.tabs.query({url: "https://stickertags2.glitch.me/manageAccount", currentWindow: true}, function(tabs) {
+                                //    chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello to content script"}, function(response) {
+                                //      
+                                //                  console.log(response.farewell);
+                                //    });
+                                // });
 
                             })
 
-                    })
-            })
-            .catch(error => alert('Login error\n' + JSON.stringify(error, null, 2)));
-    });
-});
+}*/
