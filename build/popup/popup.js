@@ -106,6 +106,41 @@ $(document).ready(function() {
             })
             .catch(error => alert('Login error\n' + JSON.stringify(error, null, 2)));
     });
+    // checkbox change => un/display tags
+    $('#injectionActive').change((ev)=>{
+
+                    if ( $('#injectionActive').is(':checked')){
+                        //chrome.tabs.create({url: "www.wikipedia.org"})    
+                        chrome.tabs.query({},tabs=>{
+                            tabs.forEach(tab => {
+                                //$('#status').append('<p>' + tab.url +'</p>')
+                                chrome.tabs.executeScript(tab.id, {
+                                    "code": "if (!stickerTagsWienContainer) {let stickerTagsWienContainer=null;}"+
+                                            "stickerTagsWienContainer = document.getElementById('stickerTagsWienContainer');" +
+                                            "if (stickerTagsWienContainer) { "+
+                                                //"console.log('has DIV', stickerTagsWienContainer);" +
+                                                "stickerTagsWienContainer.style.display = 'block';"+
+                                            "} else console.log('no such DIV')"           
+                                })
+                                
+                            });     
+                        })        
+                    } else {
+                        chrome.tabs.query({},tabs=>{
+                                tabs.forEach(tab => {
+                                    chrome.tabs.executeScript(tab.id, {
+                                        "code": "if (!stickerTagsWienContainer) {let stickerTagsWienContainer=null;}"+
+                                                "stickerTagsWienContainer = document.getElementById('stickerTagsWienContainer');" +
+                                                "if (stickerTagsWienContainer) {"+
+                                                    //"console.log('has DIV', stickerTagsWienContainer);" +
+                                                    "stickerTagsWienContainer.style.display = 'none';"+
+                                                "} else console.log('NO such div')"
+                                    })
+                                }); 
+                                
+                        })
+                    }
+    })
 });
 
 

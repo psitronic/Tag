@@ -1,3 +1,10 @@
+#stickerTagsWienContainer{
+    position: fixed;
+    top: 0;
+    right: 0;
+    min-height: 100vh;
+    z-index: 1;
+}
 .fixed-right-panel {
     position: fixed;
     top: 0;
