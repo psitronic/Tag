@@ -51,8 +51,7 @@
     width: 3em;
     height: 3em;
     text-align: center;
-    line-height: 3em;
-    background-color: white;
+    color: white;
 }
 #tag-trigger-icon {
     position: fixed;
