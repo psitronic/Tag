@@ -1,8 +1,10 @@
+browser = (typeof chrome === 'undefined') ? browser : chrome;
+
 $(function(){
   console.log("hi frm account script")
 
 
-  chrome.runtime.sendMessage({getLoginData: true}, function(response){
+  browser.runtime.sendMessage({getLoginData: true}, function(response){
 
           console.log("msg sent, recieved this:\n", response)
           //let origin = "https://stickertags2.glitch.me"

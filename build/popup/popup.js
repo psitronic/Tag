@@ -1,3 +1,5 @@
+browser = (typeof chrome === 'undefined') ? browser : chrome;
+
 class API {
     constructor(baseUrl) {
         this.baseUrl =  baseUrl;
@@ -85,37 +87,31 @@ $(document).ready(function() {
     
     $('#userAccountAnchor').click(ev => {
         // open new tab with url "/manageAccount" and server redirects and sends handlebars file
-        chrome.tabs.create({url:"https://stickertags2.glitch.me/manageAccount"}, (newTab)=>{
-            chrome.tabs.query({url: "https://stickertags2.glitch.me/manageAccount", currentWindow: true}, function(tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, {greeting: "hello to content script"}, function(response) {
-                    console.log(response.farewell);
-                });
-            });
-        });
+        openManageAccountSite();
     });
 
     $('#logout').click(ev => {
         ev.preventDefault();
-        chrome.runtime.sendMessage({removeLoginData: true}, function(response) {
+        browser.runtime.sendMessage({removeLoginData: true}, function(response) {
             $('#status').text(`Logged out. Reopen to log in.`);
         });
     });
 
     $('#injectionActive').change((ev)=>{
         if ( $('#injectionActive').is(':checked')) {
-            //chrome.tabs.create({url: "www.wikipedia.org"})    
-            chrome.tabs.query({},tabs=>{
+            //browser.tabs.create({url: "www.wikipedia.org"})    
+            browser.tabs.query({},tabs=>{
                 tabs.forEach(tab => {
-                    chrome.tabs.executeScript(tab.id, {
+                    browser.tabs.executeScript(tab.id, {
                         "code": `$('#tag-main').removeClass('hidden');`        
                     });
                     
                 });     
             });
         } else {
-            chrome.tabs.query({},tabs=>{
+            browser.tabs.query({},tabs=>{
                     tabs.forEach(tab => {
-                        chrome.tabs.executeScript(tab.id, {
+                        browser.tabs.executeScript(tab.id, {
                             "code": `$('#tag-main').addClass('hidden');`
                         })
                     }); 
@@ -125,10 +121,20 @@ $(document).ready(function() {
             })
 });
 
+function openManageAccountSite() {
+    browser.tabs.create({ url: "https://stickertags2.glitch.me/manageAccount" }, (newTab) => {
+        browser.tabs.query({ url: "https://stickertags2.glitch.me/manageAccount", currentWindow: true }, function (tabs) {
+            browser.tabs.sendMessage(tabs[0].id, { greeting: "hello to content script" }, function (response) {
+                console.log(response.farewell);
+            });
+        });
+    });
+}
+
 // Checks if login data is stored in cookies
 function checkCookieLogin() {
     return new Promise((resolve, reject) => {
-        chrome.runtime.sendMessage({getLoginData: true}, function(response) {
+        browser.runtime.sendMessage({getLoginData: true}, function(response) {
             if (response) {
                 resolve(response);
             } else {
@@ -147,7 +153,7 @@ function onLogin(response) {
     // store cookie on client must be done in event/background extension script otherwise it results in double un-parseable entry
     //if (!document.cookie) document.cookie = JSON.stringify(response)
 
-    chrome.runtime.sendMessage({
+    browser.runtime.sendMessage({
         newLoginData: response
     }, function(response) {
         console.log(response);

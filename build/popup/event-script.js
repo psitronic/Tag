@@ -1,10 +1,10 @@
 // deleteAllCookies();
 console.log('hi from event script', document.cookie,"<<");
 
+browser = (typeof chrome === 'undefined') ? browser : chrome;
 
 
-
-chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
+browser.runtime.onMessage.addListener( function(request, sender, sendResponse) {
     console.log("!!!!  message from CS  !!!!", request.loginData, "<<");
     console.log('request', request);
 
