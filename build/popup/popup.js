@@ -93,6 +93,36 @@ $(document).ready(function() {
             });
         });
     });
+
+    $('#logout').click(ev => {
+        ev.preventDefault();
+        chrome.runtime.sendMessage({removeLoginData: true}, function(response) {
+            $('#status').text(`Logged out. Reopen to log in.`);
+        });
+    });
+
+    $('#injectionActive').change((ev)=>{
+        if ( $('#injectionActive').is(':checked')) {
+            //chrome.tabs.create({url: "www.wikipedia.org"})    
+            chrome.tabs.query({},tabs=>{
+                tabs.forEach(tab => {
+                    chrome.tabs.executeScript(tab.id, {
+                        "code": `$('#tag-main').removeClass('hidden');`        
+                    });
+                    
+                });     
+            });
+        } else {
+            chrome.tabs.query({},tabs=>{
+                    tabs.forEach(tab => {
+                        chrome.tabs.executeScript(tab.id, {
+                            "code": `$('#tag-main').addClass('hidden');`
+                        })
+                    }); 
+                    
+            })
+        }
+            })
 });
 
 // Checks if login data is stored in cookies

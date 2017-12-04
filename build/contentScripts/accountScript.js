@@ -1,5 +1,5 @@
 $(function(){
-  console.log("hi from account script")
+  console.log("hi frm account script")
 
 
   chrome.runtime.sendMessage({getLoginData: true}, function(response){

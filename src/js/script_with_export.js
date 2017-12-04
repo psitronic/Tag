@@ -72,20 +72,20 @@ class API {
 const tagAPI = new API('https://stickertags2.glitch.me/');
 tagAPI.getMessages = function() {
     const args = { 
-        website: getWebsite()
+        website: getCurrentWebsite()
     };
     return this.apiCall(args, 'getMessages');
 };
 
 tagAPI.postMessage = function(message) {
     const args = {
-        website: getWebsite(),
+        website: getCurrentWebsite(),
         message: message
     };
     return this.apiCall(args, 'postMessage', 'POST');
 };
 
-const getWebsite = () => {
+const getCurrentWebsite = () => {
     let website = window.location.host + window.location.pathname;
     if (website.includes('index.')) {
         website = website.substring(0, website.indexOf('index.'));
@@ -94,37 +94,39 @@ const getWebsite = () => {
 };
 
 // Add sample response for getMessages (useful when you have no internet / the server is not responding)
-if (true) {
-    tagAPI.getMessages = () => Promise.resolve([
-        {
-            author: 'Lui',
-            text: 'Awesome Atmosphere'
-        },
-        {
-            author: 'Ian',
-            text: 'Hello World!'
-        },
-        {
-            author: 'Laslo',
-            text: 'Really beautiful website <3'
-        },
-        {
-            author: 'Iris',
-            text: '#FAQ is really interesting'
-        }
-    ]);
-}
-if (true) {
-    tagAPI.postMessage = (message) => Promise.resolve({
-        author: 'you',
-        text: message
-    });
-}
+// if (true) {
+//     tagAPI.getMessages = () => Promise.resolve([
+//         {
+//             author: 'Lui',
+//             text: 'Awesome Atmosphere'
+//         },
+//         {
+//             author: 'Ian',
+//             text: 'Hello World!'
+//         },
+//         {
+//             author: 'Laslo',
+//             text: 'Really beautiful website <3'
+//         },
+//         {
+//             author: 'Iris',
+//             text: '#FAQ is really interesting'
+//         }
+//     ]);
+// }
+// if (true) {
+//     tagAPI.postMessage = (message) => Promise.resolve({
+//         author: 'you',
+//         text: message
+//     });
+// }
 
 $(document).ready(function() {
     $('#tag-trigger-icon').on('click', function(event) {
         $('#tag-main').toggleClass('tag-small');
     });
+
+    // Load messages for the website
     tagAPI.getMessages()
         .then(messages => {
             if (messages.length) {
@@ -137,6 +139,7 @@ $(document).ready(function() {
             console.error(error);
         });
     
+    // Init form to create new messages
     initNewMessageForm();
 });
 
@@ -169,6 +172,7 @@ const initNewMessageForm = () => {
             })
             .catch(() => alert('Error while creating message :/'));
     };
+    
     // Submit triggerer
     $('form[name="new-message"]').submit(handleSubmit);
     $('form[name="new-message').keydown(function(e) {

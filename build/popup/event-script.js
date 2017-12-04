@@ -8,6 +8,9 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
     console.log("!!!!  message from CS  !!!!", request.loginData, "<<");
     console.log('request', request);
 
+    if (request.removeLoginData) {
+        eraseCookie('loginData');
+    }
     if (request.newLoginData) {
         if (!document.cookie) {
             createCookie('loginData', request.newLoginData, 28);

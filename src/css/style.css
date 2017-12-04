@@ -6,15 +6,12 @@
  #tag-main {
      font-size: 16px;
  }
-/* #stickerTagsWienContainer{
-    position: fixed;
-    top: 0;
-    right: 0;
-    min-height: 100vh;
-    z-index: 1;
-} */
+ #tag-main.hidden {
+     display: none;
+ }
 .tag-fixed-right-panel {
     position: fixed;
+    z-index: 1000000;
     top: 0;
     right: 0;
     width: 300px;
@@ -34,6 +31,7 @@
     background-color: rgba(0, 0, 0, 0);
     overflow: hidden;
     transition: background-color 300ms 0ms ease-in-out;
+    pointer-events: none;
 }
 #tag-content {
     opacity: 1;
@@ -67,6 +65,7 @@
                 opacity 300ms ease;
     cursor: pointer;
     overflow: hidden;
+    pointer-events: all;
 }
 .tag-small #tag-trigger-icon {
     top: 2em;
