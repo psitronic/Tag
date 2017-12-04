@@ -16,14 +16,24 @@
         <button type="submit">Login</button>
       </form>
       <p id="status"></p>
+      <br/>
 
-      <div id="activePanel">
-          <label>tag display active</label>
-          <input type="checkbox" checked>
-
-
+      <div id="activePanel">    
+          <div>
+            <label>tag display toggle</label>
+            <input id="injectionActive" type="checkbox" checked>
+          </div>
+          <br/>
+          
           <p id="userAccountAnchor" >manage my account</p>
       </div>
+
+      <br/>
+      <div id="raw_cookie">
+        <!--p>raw cookie</p-->
+        <p id="cookie"></p>
+      </div>
+
   </div>
   <script type="application/javascript" src="popup.js"></script>
 </body>
