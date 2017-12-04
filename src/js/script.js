@@ -79,7 +79,7 @@ tagAPI.getMessages = function() {
 tagAPI.postMessage = function(message) {
     const args = {
         website: getCurrentWebsite(),
-        message: message
+        messageText: message
     };
     return this.apiCall(args, 'postMessage', 'POST');
 };
@@ -92,33 +92,6 @@ const getCurrentWebsite = () => {
     return website;
 };
 
-// Add sample response for getMessages (useful when you have no internet / the server is not responding)
-// if (true) {
-//     tagAPI.getMessages = () => Promise.resolve([
-//         {
-//             author: 'Lui',
-//             text: 'Awesome Atmosphere'
-//         },
-//         {
-//             author: 'Ian',
-//             text: 'Hello World!'
-//         },
-//         {
-//             author: 'Laslo',
-//             text: 'Really beautiful website <3'
-//         },
-//         {
-//             author: 'Iris',
-//             text: '#FAQ is really interesting'
-//         }
-//     ]);
-// }
-// if (true) {
-//     tagAPI.postMessage = (message) => Promise.resolve({
-//         author: 'you',
-//         text: message
-//     });
-// }
 
 $(document).ready(function() {
     $('#tag-trigger-icon').on('click', function(event) {
@@ -128,6 +101,7 @@ $(document).ready(function() {
     // Load messages for the website
     tagAPI.getMessages()
         .then(messages => {
+            console.log('Loaded messages', messages);
             if (messages.length) {
                 showMessages(messages);
             } else {
@@ -164,6 +138,7 @@ const initNewMessageForm = () => {
     const handleSubmit = function(event) {
         event.preventDefault();
         const message = $('form[name="new-message"] textarea').val();
+        console.log('postMessage', message);
         tagAPI.postMessage(message)
             .then(response => {
                 $('form[name="new-message"] textarea').val('');
