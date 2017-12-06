@@ -1,10 +1,10 @@
 // deleteAllCookies();
-console.log('hi from event script', document.cookie,"<<");
+console.log('hi from event script', document.cookie, "<<");
 
 browser = (typeof chrome === 'undefined') ? browser : chrome;
 
 
-browser.runtime.onMessage.addListener( function(request, sender, sendResponse) {
+browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     console.log("!!!!  message from CS  !!!!", request.loginData, "<<");
     console.log('request', request);
 
@@ -22,14 +22,14 @@ browser.runtime.onMessage.addListener( function(request, sender, sendResponse) {
         sendResponse(loginData);
     }
 
-    console.log(sender.tab ? "from a content script:" + sender.tab.url :"from the extension");
+    console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
 });
 
 function createCookie(name, value, days) {
     var expires = "";
     if (days) {
         var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
         expires = "; expires=" + date.toUTCString();
     }
     if (typeof value === 'object') {
@@ -41,16 +41,16 @@ function createCookie(name, value, days) {
 function readCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
 }
 
 function eraseCookie(name) {
-    createCookie(name,"",-1);
+    createCookie(name, "", -1);
 }
 
 function deleteAllCookies() {

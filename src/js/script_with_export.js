@@ -17,7 +17,7 @@ export default function() {
  */
 class API {
     constructor(baseUrl) {
-        this.baseUrl =  baseUrl;
+        this.baseUrl = baseUrl;
     }
 
     /** apiCall
@@ -34,22 +34,25 @@ class API {
      * };
      * apiCall(args, 'account/', 'POST');
      */
-    apiCall(args, subPath='', method='GET') {
+    apiCall(args, subPath = '', method = 'GET') {
         const url = this.baseUrl + subPath;
-        switch(method) {
-            case 'GET': {
-                // Convert args object to parameter string	
-                const parameterString = '?' + Object.entries(args).map(argPair => argPair.join('=')).join('&');
-                return this._get(url + parameterString);
-                break;
-            }
-            case 'POST': {
-                return this._post(url, args);
-                break;
-            }
-            default: {
-                return Promise.reject('unsupported method');
-            }
+        switch (method) {
+            case 'GET':
+                {
+                    // Convert args object to parameter string	
+                    const parameterString = '?' + Object.entries(args).map(argPair => argPair.join('=')).join('&');
+                    return this._get(url + parameterString);
+                    break;
+                }
+            case 'POST':
+                {
+                    return this._post(url, args);
+                    break;
+                }
+            default:
+                {
+                    return Promise.reject('unsupported method');
+                }
         }
     }
     _get(url) {
@@ -70,14 +73,14 @@ class API {
 
 // Create API
 const tagAPI = new API('https://stickertags2.glitch.me/api/');
-tagAPI.getMessages = function() {
-    const args = { 
+tagAPI.getMessages = function () {
+    const args = {
         website: getCurrentWebsite()
     };
     return this.apiCall(args, 'getMessages');
 };
 
-tagAPI.postMessage = function(message) {
+tagAPI.postMessage = function (message) {
     const args = {
         website: getCurrentWebsite(),
         messageText: message
@@ -94,8 +97,8 @@ const getCurrentWebsite = () => {
 };
 
 
-$(document).ready(function() {
-    $('#tag-trigger-icon').on('click', function(event) {
+$(document).ready(function () {
+    $('#tag-trigger-icon').on('click', function (event) {
         $('#tag-main').toggleClass('tag-small');
     });
 
@@ -106,7 +109,10 @@ $(document).ready(function() {
             if (messages.length) {
                 showMessages(messages);
             } else {
-                showMessages([{author: 'Tag Team', text: '#First'}]);
+                showMessages([{
+                    author: 'Tag Team',
+                    text: '#First'
+                }]);
             }
         })
         .catch(error => {
@@ -119,12 +125,15 @@ $(document).ready(function() {
             console.error(error);
             showError(errorMessage);
         });
-    
+
     // Init form to create new messages
     initNewMessageForm();
 });
 
-const showError = errorText => prependMessage({Name: '[ERROR]', Message: errorText});
+const showError = errorText => prependMessage({
+    Name: '[ERROR]',
+    Message: errorText
+});
 const showMessages = messages => messages.forEach(appendMessage);
 const prependMessage = message => $('#tag-messages').prepend(getMessageHtml(message));
 const appendMessage = message => $('#tag-messages').append(getMessageHtml(message));
@@ -140,11 +149,11 @@ const getMessageHtml = message => `
 
 const initNewMessageForm = () => {
     // Show submit button on focus
-    $('form[name="new-message"] *').focus(function(e) {
+    $('form[name="new-message"] *').focus(function (e) {
         $(this).parent().children('button[type="submit"]').fadeIn();
     });
 
-    const handleSubmit = function(event) {
+    const handleSubmit = function (event) {
         event.preventDefault();
         const message = $('form[name="new-message"] textarea').val();
         console.log('postMessage', message);
@@ -155,15 +164,14 @@ const initNewMessageForm = () => {
             })
             .catch(() => alert('Error while creating message :/'));
     };
-    
+
     // Submit triggerer
     $('form[name="new-message"]').submit(handleSubmit);
-    $('form[name="new-message').keydown(function(e) {
+    $('form[name="new-message').keydown(function (e) {
         // Ctrl + Enter
         if (e.ctrlKey && e.which === 13) {
             handleSubmit(e);
         }
     });
 };
-
 };

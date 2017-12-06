@@ -2,7 +2,7 @@ browser = (typeof chrome === 'undefined') ? browser : chrome;
 
 class API {
     constructor(baseUrl) {
-        this.baseUrl =  baseUrl;
+        this.baseUrl = baseUrl;
         this.baseArgs = {};
     }
 
@@ -20,26 +20,29 @@ class API {
      * };
      * apiCall(args, 'account/', 'POST');
      */
-    apiCall(args, subPath='', method='GET') {
+    apiCall(args, subPath = '', method = 'GET') {
         args = {
             ...this.baseArgs,
             ...args
         };
         const url = this.baseUrl + subPath;
-        switch(method) {
-            case 'GET': {
-                // Convert args object to parameter string	
-                const parameterString = '?' + Object.entries(args).map(argPair => argPair.join('=')).join('&');
-                return this._get(url + parameterString);
-                break;
-            }
-            case 'POST': {
-                return this._post(url, args);
-                break;
-            }
-            default: {
-                return Promise.reject('unsupported method');
-            }
+        switch (method) {
+            case 'GET':
+                {
+                    // Convert args object to parameter string	
+                    const parameterString = '?' + Object.entries(args).map(argPair => argPair.join('=')).join('&');
+                    return this._get(url + parameterString);
+                    break;
+                }
+            case 'POST':
+                {
+                    return this._post(url, args);
+                    break;
+                }
+            default:
+                {
+                    return Promise.reject('unsupported method');
+                }
         }
     }
     /** setBaseArg
@@ -77,15 +80,15 @@ class API {
 // Create API
 const tagAPI = new API('https://stickertags2.glitch.me/api/');
 
-tagAPI.login = function(loginemail, loginpassword) {
+tagAPI.login = function (loginemail, loginpassword) {
     const args = {
-        loginemail, 
+        loginemail,
         loginpassword,
     };
     return this.apiCall(args, 'login', 'POST');
 };
 
-tagAPI.logout = function() {
+tagAPI.logout = function () {
     const args = {};
     return this.apiCall(args, 'logout', 'POST');
 };
@@ -96,12 +99,12 @@ tagAPI.getMessages = function () {
 };
 
 
-$(document).ready(function() {
-    $('form').submit(function(e) {
+$(document).ready(function () {
+    $('form').submit(function (e) {
         e.preventDefault();
         var email = $('input[name="email"]').val();
         var password = $('input[name="password"]').val();
-        
+
         $('#status').text('Logging in');
 
         // Call function
@@ -113,8 +116,8 @@ $(document).ready(function() {
     // Cookie login
     checkCookieLogin()
         .then(onLogin)
-        .catch(() => {});   // (If no login data is stored it is no error, hence do nothing)
-    
+        .catch(() => {}); // (If no login data is stored it is no error, hence do nothing)
+
     $('#userAccountAnchor').click(ev => {
         // open new tab with url "/manageAccount" and server redirects and sends handlebars file
         openManageAccountSite();
@@ -122,7 +125,9 @@ $(document).ready(function() {
 
     $('#logout').click(ev => {
         ev.preventDefault();
-        browser.runtime.sendMessage({removeLoginData: true}, function(response) {
+        browser.runtime.sendMessage({
+            removeLoginData: true
+        }, function (response) {
             $('#status').text(`Logged out. Reopen to log in.`);
         });
         tagAPI.logout()
@@ -130,34 +135,41 @@ $(document).ready(function() {
             .catch(console.error);
     });
 
-    $('#injectionActive').change((ev)=>{
-        if ( $('#injectionActive').is(':checked')) {
+    $('#injectionActive').change((ev) => {
+        if ($('#injectionActive').is(':checked')) {
             //browser.tabs.create({url: "www.wikipedia.org"})    
-            browser.tabs.query({},tabs=>{
+            browser.tabs.query({}, tabs => {
                 tabs.forEach(tab => {
                     browser.tabs.executeScript(tab.id, {
-                        "code": `$('#tag-main').removeClass('hidden');`        
+                        "code": `$('#tag-main').removeClass('hidden');`
                     });
-                    
-                });     
+
+                });
             });
         } else {
-            browser.tabs.query({},tabs=>{
-                    tabs.forEach(tab => {
-                        browser.tabs.executeScript(tab.id, {
-                            "code": `$('#tag-main').addClass('hidden');`
-                        })
-                    }); 
-                    
+            browser.tabs.query({}, tabs => {
+                tabs.forEach(tab => {
+                    browser.tabs.executeScript(tab.id, {
+                        "code": `$('#tag-main').addClass('hidden');`
+                    })
+                });
+
             })
         }
-            })
+    })
 });
 
 function openManageAccountSite() {
-    browser.tabs.create({ url: "https://stickertags2.glitch.me/manageAccount" }, (newTab) => {
-        browser.tabs.query({ url: "https://stickertags2.glitch.me/manageAccount", currentWindow: true }, function (tabs) {
-            browser.tabs.sendMessage(tabs[0].id, { greeting: "hello to content script" }, function (response) {
+    browser.tabs.create({
+        url: "https://stickertags2.glitch.me/manageAccount"
+    }, (newTab) => {
+        browser.tabs.query({
+            url: "https://stickertags2.glitch.me/manageAccount",
+            currentWindow: true
+        }, function (tabs) {
+            browser.tabs.sendMessage(tabs[0].id, {
+                greeting: "hello to content script"
+            }, function (response) {
                 console.log(response.farewell);
             });
         });
@@ -167,7 +179,9 @@ function openManageAccountSite() {
 // Checks if login data is stored in cookies
 function checkCookieLogin() {
     return new Promise((resolve, reject) => {
-        browser.runtime.sendMessage({getLoginData: true}, function(response) {
+        browser.runtime.sendMessage({
+            getLoginData: true
+        }, function (response) {
             if (response) {
                 resolve(response);
             } else {
@@ -188,7 +202,7 @@ function onLogin(response) {
 
     browser.runtime.sendMessage({
         newLoginData: response
-    }, function(response) {
+    }, function (response) {
         console.log(response);
     });
 
