@@ -68,7 +68,7 @@ class API {
 }
 
 // Create API
-const tagAPI = new API('https://stickertags2.glitch.me/');
+const tagAPI = new API('https://stickertags2.glitch.me/api/');
 tagAPI.getMessages = function() {
     const args = { 
         website: getCurrentWebsite()
@@ -109,13 +109,21 @@ $(document).ready(function() {
             }
         })
         .catch(error => {
+            let errorMessage = '';
+            if (error.hasOwnProperty('success')) {
+                errorMessage = 'Not logged in';
+            } else {
+                errorMessage = 'Could not load messages';
+            }
             console.error(error);
+            showError(errorMessage);
         });
     
     // Init form to create new messages
     initNewMessageForm();
 });
 
+const showError = errorText => prependMessage({Name: '[ERROR]', Message: errorText});
 const showMessages = messages => messages.forEach(appendMessage);
 const prependMessage = message => $('#tag-messages').prepend(getMessageHtml(message));
 const appendMessage = message => $('#tag-messages').append(getMessageHtml(message));
@@ -123,9 +131,9 @@ const appendMessage = message => $('#tag-messages').append(getMessageHtml(messag
 const getMessageHtml = message => `
     <li class="tag-message">
         <header>
-            <h4 class="tag-author">${message.author}</h4>
+            <h4 class="tag-author">${message.Name}</h4>
         </header>
-        <p class="tag-text">${message.text}</p>
+        <p class="tag-text">${message.Message}</p>
     </li>
 `;
 
