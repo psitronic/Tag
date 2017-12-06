@@ -3,6 +3,7 @@ browser = (typeof chrome === 'undefined') ? browser : chrome;
 class API {
     constructor(baseUrl) {
         this.baseUrl =  baseUrl;
+        this.baseArgs = {};
     }
 
     /** apiCall
@@ -20,6 +21,10 @@ class API {
      * apiCall(args, 'account/', 'POST');
      */
     apiCall(args, subPath='', method='GET') {
+        args = {
+            ...this.baseArgs,
+            ...args
+        };
         const url = this.baseUrl + subPath;
         switch(method) {
             case 'GET': {
@@ -37,7 +42,22 @@ class API {
             }
         }
     }
+    /** setBaseArg
+     * @description Sets an argument which will be passed to all api calls
+     * @param {string}  key
+     * @param {any}     value
+     * @example
+     * // Setting an apikey to be passed to all api calls
+     * myApi.setBaseArg('apiKey', 'abjkalödsfasd234sdf');
+     */
+    setBaseArg(key, value) {
+        this.baseArgs[key] = value;
+    }
+    removeBaseArg(key) {
+        delete this.baseArgs[key];
+    }
     _get(url) {
+        console.log('_get', url);
         return new Promise((resolve, reject) => {
             $.getJSON(url)
                 .done(resolve)
@@ -45,6 +65,7 @@ class API {
         });
     }
     _post(url, args) {
+        console.log('_post', url, args);
         return new Promise((resolve, reject) => {
             $.post(url, args)
                 .done(resolve)
@@ -54,15 +75,43 @@ class API {
 }
 
 // Create API
-const tagAPI = new API('https://stickertags2.glitch.me/');
+const tagAPI = new API('https://stickertags2.glitch.me/api/');
 
-// Add function
-tagAPI.login = function(loginemail, loginpassword) {
+tagAPI.login = function(email, password) {
     const args = {
-        loginemail, 
-        loginpassword,
+        email, 
+        password,
     };
-    return this.apiCall(args, 'login', 'POST'); //this.apiCall(args, 'loginjson', 'POST');
+    return new Promise((resolve, reject) => {
+        this.apiCall(args, 'login', 'POST')
+            .then(response => {
+                if (response.success && response.hasOwnProperty('token')) {
+                    this.setBaseArg('token', response.token);
+                    resolve(response);
+                } else {
+                    reject('no login token in server response');
+                }
+            })
+            .catch(reject);
+    });
+};
+
+tagAPI.logout = function() {
+    const args = {};
+    return new Promise((resolve, reject) => {
+        this.apiCall(args, 'logout', 'POST')
+            .then(response => {
+                console.log('logout response', response);
+                this.removeBaseArg('token');
+                resolve();
+            })
+            .catch(reject);
+    });
+};
+
+// getMessages is only for testing if the authentication works, can be removed later from here
+tagAPI.getMessages = function () {
+    return this.apiCall({}, 'getMessages');
 };
 
 
@@ -95,6 +144,9 @@ $(document).ready(function() {
         browser.runtime.sendMessage({removeLoginData: true}, function(response) {
             $('#status').text(`Logged out. Reopen to log in.`);
         });
+        tagAPI.logout()
+            .then(response => console.log('logout response', response))
+            .catch(console.error);
     });
 
     $('#injectionActive').change((ev)=>{
@@ -158,9 +210,13 @@ function onLogin(response) {
     }, function(response) {
         console.log(response);
     });
+
+    tagAPI.getMessages()
+        .then(response => console.log(response))
+        .catch(console.error);
 }
 
 function onLoginError(error) {
-    $('#status').text('Couldn\'t log in');
+    $('#status').text('Couldn\'t log in\n' + JSON.stringify(error));
     console.log(error);
 }
