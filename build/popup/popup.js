@@ -77,36 +77,17 @@ class API {
 // Create API
 const tagAPI = new API('https://stickertags2.glitch.me/api/');
 
-tagAPI.login = function(email, password) {
+tagAPI.login = function(loginemail, loginpassword) {
     const args = {
-        email, 
-        password,
+        loginemail, 
+        loginpassword,
     };
-    return new Promise((resolve, reject) => {
-        this.apiCall(args, 'login', 'POST')
-            .then(response => {
-                if (response.success && response.hasOwnProperty('token')) {
-                    this.setBaseArg('token', response.token);
-                    resolve(response);
-                } else {
-                    reject('no login token in server response');
-                }
-            })
-            .catch(reject);
-    });
+    return this.apiCall(args, 'login', 'POST');
 };
 
 tagAPI.logout = function() {
     const args = {};
-    return new Promise((resolve, reject) => {
-        this.apiCall(args, 'logout', 'POST')
-            .then(response => {
-                console.log('logout response', response);
-                this.removeBaseArg('token');
-                resolve();
-            })
-            .catch(reject);
-    });
+    return this.apiCall(args, 'logout', 'POST');
 };
 
 // getMessages is only for testing if the authentication works, can be removed later from here
@@ -211,6 +192,7 @@ function onLogin(response) {
         console.log(response);
     });
 
+    // for testing authentication only. can be deleted later
     tagAPI.getMessages()
         .then(response => console.log(response))
         .catch(console.error);
