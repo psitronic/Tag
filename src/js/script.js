@@ -76,13 +76,25 @@ tagAPI.getMessages = function () {
     const args = {
         website: getCurrentWebsite()
     };
-    return this.apiCall(args, 'getMessages');
+    return new Promise((resolve, reject) => {
+        // Sort newest first
+        this.apiCall(args, 'getMessages')
+            .then(messages => messages.sort((a, b) => (a.Date == b.Date) ? 0 : (b.Date > a.Date) ? 1 : -1))
+            .catch(reject);
+    });
 };
 
 tagAPI.postMessage = function (message) {
     const args = {
-        website: getCurrentWebsite(),
-        messageText: message
+        webtag: JSON.stringify({
+            website: getCurrentWebsite(),
+            messageText: message,
+            createdFor: [
+                "5a280ef104ec880ae227881c",
+                "5a280f4404ec880ae227881d",
+                "5a280f6104ec880ae227881e"
+            ]
+        })
     };
     return this.apiCall(args, 'postMessage', 'POST');
 };
@@ -91,6 +103,9 @@ const getCurrentWebsite = () => {
     let website = window.location.host + window.location.pathname;
     if (website.includes('index.')) {
         website = website.substring(0, website.indexOf('index.'));
+    }
+    if (website[website.length - 1] === '/') {
+        website = website.substr(0, website.length - 1);
     }
     return website;
 };
@@ -158,10 +173,14 @@ const initNewMessageForm = () => {
         console.log('postMessage', message);
         tagAPI.postMessage(message)
             .then(response => {
+                console.log('post message response', response);
                 $('form[name="new-message"] textarea').val('');
                 prependMessage(response);
             })
-            .catch(() => alert('Error while creating message :/'));
+            .catch(error => {
+                alert('Error while creating message :/');
+                console.error('couldn\'t post message', error);
+            });
     };
 
     // Submit triggerer
