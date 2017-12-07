@@ -185,7 +185,7 @@ const initNewMessageForm = () => {
 
     // Submit triggerer
     $('form[name="new-message"]').submit(handleSubmit);
-    $('form[name="new-message').keydown(function (e) {
+    $('form[name="new-message"]').keydown(function (e) {
         // Ctrl + Enter
         if (e.ctrlKey && e.which === 13) {
             handleSubmit(e);
