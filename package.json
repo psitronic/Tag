@@ -7,7 +7,7 @@
     "dev": "nodemon --watch ./src -e html,css,js --ignore script_with_export -x \"npm run devBuild\"",
     "build": "node ./createScriptWithExport.js && webpack -p && node ./copyStylesheet.js",
     "devBuild": "node ./createScriptWithExport.js && webpack -d && node ./copyStylesheet.js",
-    "web-ext": "web-ext run --source-dir ./build",
+    "web-ext": "web-ext run --source-dir ./build --browser-console",
     "live-preview": "serve"
   },
   "author": "",
