@@ -11,7 +11,7 @@ $(function () {
 
         if (location.href === "https://stickertags2.glitch.me/manageAccount") {
             $.post("/manageAccount", {
-                _id: response.session.userId
+                _id: response.userId
             }, function (data, status, xhr) {
                 if (!data) console.error("no URL subpath received")
                 else {
