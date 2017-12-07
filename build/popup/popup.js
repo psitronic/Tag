@@ -113,10 +113,10 @@ $(document).ready(function () {
             .catch(onLoginError);
     });
 
-    // Cookie login
-    checkCookieLogin()
+    // Check if the user is already logged in
+    isLoggedIn()
         .then(onLogin)
-        .catch(() => {}); // (If no login data is stored it is no error, hence do nothing)
+        .catch(() => console.log('Currently not logged in')); // (If no login data is stored it is no error, hence do nothing)
 
     $('#userAccountAnchor').click(ev => {
         // open new tab with url "/manageAccount" and server redirects and sends handlebars file
@@ -176,8 +176,8 @@ function openManageAccountSite() {
     });
 }
 
-// Checks if login data is stored in cookies
-function checkCookieLogin() {
+// Checks if login data is stored
+function isLoggedIn() {
     return new Promise((resolve, reject) => {
         browser.runtime.sendMessage({
             getLoginData: true
@@ -196,9 +196,6 @@ function onLogin(response) {
     $('#status').text(`Logged in as ${response.name}`);
     $('#activePanel').css('display', 'flex');
     $('#loginForm').css('display', 'none');
-
-    // store cookie on client must be done in event/background extension script otherwise it results in double un-parseable entry
-    //if (!document.cookie) document.cookie = JSON.stringify(response)
 
     browser.runtime.sendMessage({
         newLoginData: response

@@ -1,15 +1,14 @@
 browser = (typeof chrome === 'undefined') ? browser : chrome;
 
-$(function () {
-    console.log("hi frm account script")
+if (location.href === "https://stickertags2.glitch.me/manageAccount") {
+    $(function () {
+        console.log("hi frm account script")
+            
+        browser.runtime.sendMessage({
+            getLoginData: true
+        }, function (response) {
 
-    browser.runtime.sendMessage({
-        getLoginData: true
-    }, function (response) {
-
-        console.log("msg sent, recieved this:\n", response)
-
-        if (location.href === "https://stickertags2.glitch.me/manageAccount") {
+            console.log("msg sent, recieved this:\n", response)
             $.post("/manageAccount", {
                 _id: response.userId
             }, function (data, status, xhr) {
@@ -20,6 +19,6 @@ $(function () {
                     console.log("location", location)
                 }
             });
-        }
+        });
     });
-});
+}
