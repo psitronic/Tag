@@ -90,6 +90,7 @@ tagAPI.login = function (loginemail, loginpassword) {
 
 tagAPI.logout = function () {
     const args = {};
+    
     return this.apiCall(args, 'logout', 'POST');
 };
 
@@ -128,10 +129,18 @@ $(document).ready(function () {
         browser.runtime.sendMessage({
             removeLoginData: true
         }, function (response) {
-            $('#status').text(`Logged out. Reopen to log in.`);
+            $('#status').text(`Almost logged out. Just a sec..`); // Reopen to log in.
         });
         tagAPI.logout()
-            .then(response => console.log('logout response', response))
+            .then(response => {
+                    console.log('logout response', response);
+
+                    $('body').append(`<h2 style="text-align: center; color: black">Logged out!</h2>`)
+                    setTimeout(()=>{
+                        window.close();
+                    },1200)
+                    
+            })
             .catch(console.error);
     });
 
