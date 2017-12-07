@@ -80,7 +80,7 @@ tagAPI.getMessages = function () {
     return new Promise((resolve, reject) => {
         // Sort newest first
         this.apiCall(args, 'getMessages')
-            .then(messages => messages.sort((a, b) => (a.Date == b.Date) ? 0 : (b.Date > a.Date) ? 1 : -1))
+            .then(messages => resolve(messages.sort((a, b) => (a.Date == b.Date) ? 0 : (b.Date > a.Date) ? 1 : -1)))
             .catch(reject);
     });
 };
