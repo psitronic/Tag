@@ -7,7 +7,7 @@ $(function () {
         getLoginData: true
     }, function (response) {
 
-        console.log("msg sent, recieved this:\n", response)
+        console.log("browser.runtime recieved:", response)
 
         if (location.href === "https://stickertags2.glitch.me/manageAccount") {
             $.post("/api/manageAccount", {
@@ -20,6 +20,6 @@ $(function () {
                     console.log("location", location)
                 }
             });
-        }
+        } 
     });
 });

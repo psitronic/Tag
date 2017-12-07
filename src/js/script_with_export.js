@@ -80,6 +80,30 @@ tagAPI.getMessages = function () {
     return this.apiCall(args, 'getMessages');
 };
 
+const getMessagesByURI = function(){
+
+    // sorry, idk how to set request headers using the api here, so i did it another way
+    return new Promise((resolve,rej)=>{
+
+                $.ajax({
+                    url: "https://stickertags2.glitch.me/api/getMessagesByURI",
+                    type: "GET",
+                    beforeSend: (xhr)=>{xhr.setRequestHeader('website', location.href);},
+                    success: (data, status,xhr)=>{  //console.log("ajax data rcvd", data)
+
+                                    if (data) resolve(data)
+                                    else reject(null)
+
+                    },
+                    error: (er)=>{  console.log('error getting your msgs', er);
+                                    // use the error? 
+                                    reject(er)    
+                    }
+                });
+
+    })
+}
+
 tagAPI.postMessage = function (message) {
     const args = {
         website: getCurrentWebsite(),
@@ -102,8 +126,15 @@ $(document).ready(function () {
         $('#tag-main').toggleClass('tag-small');
     });
 
-    // Load messages for the website
-    tagAPI.getMessages()
+    /**
+     *   m: i made another version 'getMessagesByURI' below/up, that gets only those for current href
+     *      after fetching them it does exactly what your function did, i copy/pasted it
+     * 
+     *      i commented this part out to display only what was intended
+     */ 
+    //
+    // Load messages for the website    
+    /*tagAPI.getMessages()
         .then(messages => {
             console.log('Loaded messages', messages);
             if (messages.length) {
@@ -124,7 +155,30 @@ $(document).ready(function () {
             }
             console.error(error);
             showError(errorMessage);
+        });*/
+    
+    getMessagesByURI().then(messages=>{
+            console.log('Loaded messages', messages);
+            if (messages.length > 0) {
+                showMessages(messages);
+            } else {
+                showMessages([{
+                    Name: 'Tag Team',
+                    Message: '#First WebTag!'
+                }]);
+            }
+        })
+        .catch(error => {
+            let errorMessage = '';
+            if (error.hasOwnProperty('success')) {
+                errorMessage = 'Not logged in';
+            } else {
+                errorMessage = 'Could not load messages';
+            }
+            console.error(error);
+            showError(errorMessage);
         });
+    
 
     // Init form to create new messages
     initNewMessageForm();

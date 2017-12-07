@@ -7,7 +7,7 @@ browser = (typeof chrome === 'undefined') ? browser : chrome;
 
 browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     //console.log("!!!!  message from CS  !!!!", request.loginData, "<<");
-    //console.log('request', request);
+    console.log('request', request);
 
     if (request.removeLoginData) {
         eraseCookie('loginData');
