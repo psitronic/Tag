@@ -1,28 +1,34 @@
-// deleteAllCookies();
+//deleteAllCookies();
+//document.cookie = ""
 console.log('hi from event script', document.cookie, "<<");
 
 browser = (typeof chrome === 'undefined') ? browser : chrome;
 
 
 browser.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    console.log("!!!!  message from CS  !!!!", request.loginData, "<<");
-    console.log('request', request);
+    //console.log("!!!!  message from CS  !!!!", request.loginData, "<<");
+    //console.log('request', request);
 
     if (request.removeLoginData) {
         eraseCookie('loginData');
     }
     if (request.newLoginData) {
         if (!document.cookie) {
+            console.log("new login data", request.newLoginData)
+
             createCookie('loginData', request.newLoginData, 28);
         }
     }
     if (request.getLoginData) {
         console.log("req for cookie", request.getLoginData);
         const loginData = JSON.parse(readCookie('loginData'));
+
+        console.log("loginData", loginData)
+
         sendResponse(loginData);
     }
 
-    console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
+    //console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
 });
 
 function createCookie(name, value, days) {

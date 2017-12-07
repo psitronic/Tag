@@ -182,6 +182,9 @@ function checkCookieLogin() {
         browser.runtime.sendMessage({
             getLoginData: true
         }, function (response) {
+
+                console.log( "logindata response", response)
+                
             if (response) {
                 resolve(response);
             } else {

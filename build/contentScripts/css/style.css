@@ -19,7 +19,7 @@
     height: 100%;
     padding: 10px;
     box-sizing: border-box;
-    background-color: rgba(0, 128, 109, 0.9);
+    background-color: transparent/*rgba(0, 128, 109, 0.9)*/;
     overflow: auto;
 
     color: black;
